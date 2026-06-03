@@ -63,19 +63,22 @@ export default function BillingApp() {
     try {
       if (editId) {
         // ✅ UPDATE
-        await axios.put(`http://localhost:5000/update-bill/${editId}`, {
-          customerName,
-          phone,
-          vehicle,
-          items,
-          total,
-        });
+        await axios.put(
+          `https://fix-backend-32fw.onrender.com/update-bill/${editId}`,
+          {
+            customerName,
+            phone,
+            vehicle,
+            items,
+            total,
+          },
+        );
 
         alert("✅ Bill Updated");
         setEditId(null);
       } else {
         // ✅ CREATE NEW
-        await axios.post("http://localhost:5000/save-bill", {
+        await axios.post("https://fix-backend-32fw.onrender.com/save-bill", {
           customerName,
           phone,
           vehicle,
@@ -95,7 +98,9 @@ export default function BillingApp() {
 
   const fetchBills = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/bills");
+      const res = await axios.get(
+        "https://fix-backend-32fw.onrender.com/bills",
+      );
       setBills(res.data);
     } catch (err) {
       console.error(err);
@@ -104,7 +109,9 @@ export default function BillingApp() {
 
   const fetchReport = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/daily-report");
+      const res = await axios.get(
+        "https://fix-backend-32fw.onrender.com/daily-report",
+      );
       setReport(res.data);
     } catch (err) {
       console.error(err);
@@ -117,7 +124,9 @@ export default function BillingApp() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`http://localhost:5000/delete-bill/${id}`);
+      await axios.delete(
+        `https://fix-backend-32fw.onrender.com/delete-bill/${id}`,
+      );
       fetchBills();
     } catch (err) {
       console.error(err);
@@ -133,7 +142,9 @@ export default function BillingApp() {
   };
   const fetchMonthlyReport = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/monthly-report");
+      const res = await axios.get(
+        "https://fix-backend-32fw.onrender.com/monthly-report",
+      );
       setMonthlyReport(res.data);
     } catch (err) {
       console.error(err);
@@ -277,7 +288,34 @@ export default function BillingApp() {
     color: "#fff",
     cursor: "pointer",
   };
+  const handlePrint = () => {
+    const invoice = document.getElementById("invoice");
 
+    if (!invoice) {
+      alert("No invoice selected!");
+      return;
+    }
+
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+    <html>
+      <head>
+        <title>Print Invoice</title>
+        <style>
+          body { font-family: Arial; padding: 20px; }
+        </style>
+      </head>
+      <body>
+        ${invoice.outerHTML}
+      </body>
+    </html>
+  `);
+
+    printWindow.document.close();
+    printWindow.print();
+  };
+  ``;
   return (
     <div
       style={{
@@ -410,7 +448,7 @@ export default function BillingApp() {
           marginTop: 10,
         }}
       >
-        <button onClick={() => window.print()}>Print Bill</button>
+        <button onClick={handlePrint}>Print Bill</button>
         <button onClick={saveBill} style={{ marginLeft: 10 }}>
           Save Bill
         </button>
@@ -557,7 +595,7 @@ export default function BillingApp() {
       <hr />
       <h3>Invoice Details</h3>
       {selectedBill && (
-        <div style={{ border: "2px solid black", padding: 15 }}>
+        <div id="invoice" style={{ border: "2px solid black", padding: 15 }}>
           <h2>Fix and Drive</h2>
           <p>
             <b>Name:</b> {selectedBill.customerName}
