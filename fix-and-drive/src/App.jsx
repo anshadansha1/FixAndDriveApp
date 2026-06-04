@@ -311,6 +311,28 @@ export default function BillingApp() {
     window.location.reload();
   };
 
+  const primaryButtonStyle = {
+    padding: "12px 20px",
+    margin: "10px",
+    borderRadius: "8px",
+    border: "none",
+    background: "#0862ac",
+    color: "#fff",
+    fontSize: "16px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
+    transition: "0.2s",
+  };
+
+  const primaryHover = (e) => {
+    e.target.style.background = "#06518f";
+  };
+
+  const primaryLeave = (e) => {
+    e.target.style.background = "#0862ac";
+  };
+
   return (
     <div
       style={{
@@ -441,39 +463,28 @@ export default function BillingApp() {
           flexWrap: "wrap",
           gap: "10px",
           marginTop: 10,
+          justifyContent: "center",
         }}
       >
-        {/* <button
-          onClick={() => {
-            const invoice = document.getElementById("invoice");
-
-            if (!invoice) {
-              alert("Select a bill first!");
-              return;
-            }
-
-            // ✅ Force focus + delay
-            setTimeout(() => {
-              window.print();
-            }, 500);
-          }}
+        <button
+          onClick={saveBill}
+          style={primaryButtonStyle}
+          onMouseEnter={primaryHover}
+          onMouseLeave={primaryLeave}
         >
-          Print Bill
-        </button> */}
-
-        <button onClick={saveBill} style={{ marginLeft: 10 }}>
-          Save Bill
-        </button>
-        <button onClick={fetchBills} style={{ marginLeft: 10 }}>
-          Load Saved Bills
-        </button>
-        <button onClick={fetchReport} style={{ marginLeft: 10 }}>
-          Load Daily Report
-        </button>
-        <button onClick={fetchMonthlyReport} style={{ marginLeft: 10 }}>
-          Load Monthly Report
+          💾Save Bill
         </button>
       </div>
+      <button onClick={fetchBills} style={{ marginLeft: 10 }}>
+        Load Saved Bills
+      </button>
+      <button onClick={fetchReport} style={{ marginLeft: 10 }}>
+        Load Daily Report
+      </button>
+      <button onClick={fetchMonthlyReport} style={{ marginLeft: 10 }}>
+        Load Monthly Report
+      </button>
+
       <div
         style={{
           marginTop: 20,
