@@ -118,9 +118,14 @@ code {
   body {
     margin: 0;
   }
-  html, body {
-    height: auto%;
+
+ 
+ html, body {
+    height: auto !important;
+    overflow: hidden !important;
   }
+  
+
   /* Hide everything visually */
   body * {
     visibility: hidden;
