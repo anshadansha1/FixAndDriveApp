@@ -288,34 +288,29 @@ export default function BillingApp() {
     color: "#fff",
     cursor: "pointer",
   };
+
   const handlePrint = () => {
     const invoice = document.getElementById("invoice");
 
     if (!invoice) {
-      alert("No invoice selected!");
+      alert("Select a bill first!");
       return;
     }
 
-    const printWindow = window.open("", "_blank");
+    const originalContent = document.body.innerHTML;
 
-    printWindow.document.write(`
-    <html>
-      <head>
-        <title>Print Invoice</title>
-        <style>
-          body { font-family: Arial; padding: 20px; }
-        </style>
-      </head>
-      <body>
-        ${invoice.outerHTML}
-      </body>
-    </html>
-  `);
+    // ✅ Show only invoice
+    document.body.innerHTML = invoice.outerHTML;
 
-    printWindow.document.close();
-    printWindow.print();
+    window.print();
+
+    // ✅ Restore full app
+    document.body.innerHTML = originalContent;
+
+    // ✅ Reload to fix React state
+    window.location.reload();
   };
-  ``;
+
   return (
     <div
       style={{
@@ -448,7 +443,24 @@ export default function BillingApp() {
           marginTop: 10,
         }}
       >
-        <button onClick={handlePrint}>Print Bill</button>
+        {/* <button
+          onClick={() => {
+            const invoice = document.getElementById("invoice");
+
+            if (!invoice) {
+              alert("Select a bill first!");
+              return;
+            }
+
+            // ✅ Force focus + delay
+            setTimeout(() => {
+              window.print();
+            }, 500);
+          }}
+        >
+          Print Bill
+        </button> */}
+
         <button onClick={saveBill} style={{ marginLeft: 10 }}>
           Save Bill
         </button>
@@ -583,6 +595,7 @@ export default function BillingApp() {
 
             {/* ✅ EDIT BUTTON */}
             <button
+              style={{ marginLeft: 10 }}
               onClick={(e) => {
                 e.stopPropagation();
                 handleEdit(bill);
@@ -622,6 +635,10 @@ export default function BillingApp() {
           <h3>Total: ₹{selectedBill.total}</h3>
           <button onClick={() => downloadPDF(selectedBill)}>
             Download PDF
+          </button>
+
+          <button style={{ marginLeft: 10 }} onClick={() => window.print()}>
+            Print Bill
           </button>
 
           <p>

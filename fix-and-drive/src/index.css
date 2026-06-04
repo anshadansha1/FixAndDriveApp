@@ -109,3 +109,43 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+
+@media print {
+  button {
+    display: none;
+  }
+  body {
+    margin: 0;
+  }
+  html, body {
+    height: auto%;
+  }
+  /* Hide everything visually */
+  body * {
+    visibility: hidden;
+  }
+  
+
+  /* Show invoice */
+  #invoice {
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 95%;
+    margin: 0 auto;
+    box-sizing: border-box;
+    page-break-inside: avoid;
+    padding: 20px;
+    border: none;
+    background: white;
+    color: black;
+  }
+
+  /* Make sure children are visible */
+  #invoice * {
+    visibility: visible;
+    color: black !important;
+  }
+}
